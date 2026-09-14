@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iglesia Sobrenatural</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         LOGIN
+    ========================== -->
+
+    <section id="login-screen" class="login-screen">
+
+        <div class="login-content">
+
+            <div class="login-logo">IS</div>
+
+            <div class="login-label">
+                IGLESIA SOBRENATURAL
+            </div>
+
+            <h1>Bienvenido</h1>
+
+            <p class="login-subtitle">
+                Ingresa para continuar
+            </p>
+
+            <form id="login-form">
+
+                <div class="login-field">
+                    <label for="login-first-name">
+                        NOMBRE
+                    </label>
+
+                    <input
+                        id="login-first-name"
+                        type="text"
+                        placeholder="Tu nombre"
+                        autocomplete="given-name"
+                        required
+                    >
+                </div>
+
+                <div class="login-field">
+                    <label for="login-last-name">
+                        APELLIDO
+                    </label>
+
+                    <input
+                        id="login-last-name"
+                        type="text"
+                        placeholder="Tu apellido"
+                        autocomplete="family-name"
+                        required
+                    >
+                </div>
+
+                <div class="login-field">
+                    <label for="login-pin">
+                        PIN
+                    </label>
+
+                    <input
+                        id="login-pin"
+                        type="password"
+                        placeholder="••••"
+                        inputmode="numeric"
+                        maxlength="10"
+                        required
+                    >
+                </div>
+
+                <button
+                    id="login-button"
+                    class="login-button"
+                    type="submit"
+                >
+                    Ingresar
+                </button>
+
+                <div
+                    id="login-message"
+                    class="login-message"
+                ></div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         APLICACIÓN
+    ========================== -->
+
+    <div class="app">
+
+        <!-- HEADER -->
+
+        <header class="top-header">
+
+            <div class="brand">
+
+                <div class="brand-logo">
+                    IS
+                </div>
+
+                <div class="brand-text">
+
+                    <span>
+                        IGLESIA
+                    </span>
+
+                    <strong>
+                        SOBRENATURAL
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <button
+                class="notification-button"
+                type="button"
+                aria-label="Notificaciones"
+            >
+                <span class="icon-bell"></span>
+            </button>
+
+        </header>
+
+
+        <!-- =========================
+             INICIO
+        ========================== -->
+
+        <main
+            id="inicio"
+            class="screen active-screen"
+        >
+
+            <section class="welcome-section">
+
+                <p class="eyebrow">
+                    IGLESIA SOBRENATURAL
+                </p>
+
+                <h1>
+                    Bienvenido
+                </h1>
+
+                <p class="welcome-text">
+                    Un solo cuerpo, una sola familia, una misma visión.
+                </p>
+
+            </section>
+
+
+            <!-- =========================
+                 PRÓXIMA ACTIVIDAD
+            ========================== -->
+
+            <section class="next-event-card">
+
+                <div class="section-label">
+                    PRÓXIMA ACTIVIDAD
+                </div>
+
+                <div class="event-date next-activity-date">
+                    SEP 13
+                </div>
+
+                <div class="event-info">
+
+                    <h2 class="next-activity-title">
+                        Cargando...
+                    </h2>
+
+                    <p class="next-activity-info">
+                        Consultando actividades...
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 TU PRÓXIMO SERVICIO
+            ========================== -->
+
+            <section class="service-card">
+
+                <div
+                    id="home-next-service-content"
+                    class="service-main"
+                >
+
+                    <div>
+
+                        <h2>
+                            Cargando...
+                        </h2>
+
+                        <p>
+                            Consultando servicios...
+                        </p>
+
+                    </div>
+
+                    <span class="service-status">
+                        Pendiente
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 ACCESO RÁPIDO
+            ========================== -->
+
+            <section class="quick-section">
+
+                <div class="section-heading">
+
+                    <h2>
+                        Acceso rápido
+                    </h2>
+
+                </div>
+
+                <div class="quick-grid">
+
+                    <button
+                        class="quick-card"
+                        type="button"
+                        data-screen="calendario"
+                    >
+
+                        <span class="quick-icon">
+                            <span class="icon-calendar"></span>
+                        </span>
+
+                        <span>
+                            Calendario
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="quick-card"
+                        type="button"
+                        data-screen="servicios"
+                    >
+
+                        <span class="quick-icon">
+                            <span class="icon-cross"></span>
+                        </span>
+
+                        <span>
+                            Servicios
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="quick-card"
+                        type="button"
+                        data-screen="ministerios"
+                    >
+
+                        <span class="quick-icon">
+                            <span class="icon-users"></span>
+                        </span>
+
+                        <span>
+                            Ministerios
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="quick-card"
+                        type="button"
+                        data-screen="perfil"
+                    >
+
+                        <span class="quick-icon">
+                            <span class="icon-user"></span>
+                        </span>
+
+                        <span>
+                            Mi perfil
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <!-- =========================
+             CALENDARIO
+        ========================== -->
+
+        <main
+            id="calendario"
+            class="screen"
+        >
+
+            <section class="page-header">
+
+                <p class="eyebrow">
+                    ORGANIZACIÓN
+                </p>
+
+                <h1>
+                    Calendario
+                </h1>
+
+                <p>
+                    Actividades y servicios de la iglesia.
+                </p>
+
+            </section>
+
+
+            <section class="calendar-card">
+
+                <div class="calendar-header">
+
+                    <button
+                        class="month-arrow"
+                        id="calendar-prev"
+                        type="button"
+                        aria-label="Mes anterior"
+                    >
+                        ‹
+                    </button>
+
+                    <h2 id="calendar-month-title">
+                        Cargando...
+                    </h2>
+
+                    <button
+                        class="month-arrow"
+                        id="calendar-next"
+                        type="button"
+                        aria-label="Mes siguiente"
+                    >
+                        ›
+                    </button>
+
+                </div>
+
+
+                <div class="calendar-weekdays">
+
+                    <span>L</span>
+                    <span>M</span>
+                    <span>M</span>
+                    <span>J</span>
+                    <span>V</span>
+                    <span>S</span>
+                    <span>D</span>
+
+                </div>
+
+
+                <div
+                    class="calendar-days"
+                    id="calendar-days"
+                >
+                    <!-- JavaScript generará los días aquí -->
+                </div>
+
+            </section>
+
+
+            <section
+                class="calendar-event"
+                id="calendar-events"
+            >
+
+                <div class="event-small-date">
+                    --
+                </div>
+
+                <div>
+
+                    <h2>
+                        Selecciona una fecha
+                    </h2>
+
+                    <p>
+                        Consulta las actividades programadas.
+                    </p>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <!-- =========================
+             SERVICIOS
+        ========================== -->
+
+        <main
+            id="servicios"
+            class="screen"
+        >
+
+            <section class="page-header">
+
+                <p class="eyebrow">
+                    MI SERVICIO
+                </p>
+
+                <h1>
+                    Servicios
+                </h1>
+
+                <p>
+                    Consulta tus próximos servicios.
+                </p>
+
+            </section>
+
+            <section class="service-detail-card">
+
+                <div
+                    id="next-service-content"
+                    class="service-detail-top"
+                >
+
+                    <div>
+
+                        <p class="section-label">
+                            PRÓXIMO SERVICIO
+                        </p>
+
+                        <h2>
+                            Cargando...
+                        </h2>
+
+                        <p>
+                            Consultando servicios
+                        </p>
+
+                    </div>
+
+                    <span class="service-badge">
+                        Pendiente
+                    </span>
+
+                </div>
+
+                <button
+                    class="confirm-button"
+                    type="button"
+                >
+                    Confirmar servicio
+                </button>
+
+            </section>
+
+
+            <section class="services-list">
+
+                <div class="section-heading">
+
+                    <h2>
+                        Próximos servicios
+                    </h2>
+
+                </div>
+
+                <div id="services-list-container">
+
+                    <div class="service-list-item">
+
+                        <div>
+
+                            <strong>
+                                Cargando...
+                            </strong>
+
+                            <p>
+                                Consultando servicios
+                            </p>
+
+                        </div>
+
+                        <span>
+                            ...
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <!-- =========================
+             MINISTERIOS
+        ========================== -->
+
+        <main
+            id="ministerios"
+            class="screen"
+        >
+
+            <section class="page-header">
+
+                <p class="eyebrow">
+                    IGLESIA
+                </p>
+
+                <h1>
+                    Ministerios
+                </h1>
+
+                <p>
+                    Conoce y organiza los ministerios.
+                </p>
+
+            </section>
+
+            <section class="ministries-list">
+
+
+                <div
+                    class="ministry-card"
+                    data-ministry-name="Pastores"
+                >
+
+                    <div class="ministry-icon">
+                        <span class="icon-users"></span>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Pastores
+                        </h2>
+
+                        <p>
+                            Dirección pastoral
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="ministry-card"
+                    data-ministry-name="Jóvenes"
+                >
+
+                    <div class="ministry-icon">
+                        <span class="icon-users"></span>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Jóvenes
+                        </h2>
+
+                        <p>
+                            Ministerio de jóvenes
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="ministry-card"
+                    data-ministry-name="Niños"
+                >
+
+                    <div class="ministry-icon">
+                        <span class="icon-users"></span>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Niños
+                        </h2>
+
+                        <p>
+                            Ministerio infantil
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="ministry-card"
+                    data-ministry-name="Diaconado"
+                >
+
+                    <div class="ministry-icon">
+                        <span class="icon-users"></span>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Diaconado
+                        </h2>
+
+                        <p>
+                            Servicio y apoyo
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="ministry-card"
+                    data-ministry-name="Intercesión"
+                >
+
+                    <div class="ministry-icon">
+                        <span class="icon-users"></span>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Intercesión
+                        </h2>
+
+                        <p>
+                            Oración e intercesión
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="ministry-card"
+                    data-ministry-name="Maestro y Maestra de sala"
+                >
+
+                    <div class="ministry-icon">
+                        <span class="icon-users"></span>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Maestro y Maestra de sala
+                        </h2>
+
+                        <p>
+                            Atención y acompañamiento
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="ministry-card"
+                    data-ministry-name="Alabanza"
+                >
+
+                    <div class="ministry-icon">
+                        <span class="icon-users"></span>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Alabanza
+                        </h2>
+
+                        <p>
+                            Música y adoración
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="ministry-card"
+                    data-ministry-name="Danza"
+                >
+
+                    <div class="ministry-icon">
+                        <span class="icon-users"></span>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Danza
+                        </h2>
+
+                        <p>
+                            Ministerio de danza
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="ministry-card"
+                    data-ministry-name="Cocina"
+                >
+
+                    <div class="ministry-icon">
+                        <span class="icon-users"></span>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Cocina
+                        </h2>
+
+                        <p>
+                            Servicio de cocina
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="ministry-card"
+                    data-ministry-name="Multimedia"
+                >
+
+                    <div class="ministry-icon">
+                        <span class="icon-users"></span>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Multimedia
+                        </h2>
+
+                        <p>
+                            Producción y multimedia
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="ministry-card"
+                    data-ministry-name="Bodega Siloé"
+                >
+
+                    <div class="ministry-icon">
+                        <span class="icon-users"></span>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Bodega Siloé
+                        </h2>
+
+                        <p>
+                            Administración de recursos
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+        </main>
+
+
+        <!-- =========================
+             PERFIL
+        ========================== -->
+
+        <main
+            id="perfil"
+            class="screen"
+        >
+
+            <section class="page-header">
+
+                <p class="eyebrow">
+                    MI CUENTA
+                </p>
+
+                <h1>
+                    Perfil
+                </h1>
+
+                <p>
+                    Información de tu cuenta.
+                </p>
+
+            </section>
+
+            <section class="profile-card">
+
+                <div class="profile-avatar">
+                    JE
+                </div>
+
+                <div class="profile-info">
+
+                    <h2 class="profile-name">
+                        Josué Eduardo
+                    </h2>
+
+                    <p class="profile-role">
+                        Servidor · Multimedia
+                    </p>
+
+                </div>
+
+            </section>
+
+            <section class="profile-options">
+
+                <button
+                    class="profile-option"
+                    type="button"
+                >
+                    <span>
+                        Información personal
+                    </span>
+
+                    <span>›</span>
+                </button>
+
+                <button
+                    class="profile-option"
+                    type="button"
+                >
+                    <span>
+                        Mis ministerios
+                    </span>
+
+                    <span>›</span>
+                </button>
+
+                <button
+                    class="profile-option"
+                    type="button"
+                >
+                    <span>
+                        Configuración
+                    </span>
+
+                    <span>›</span>
+                </button>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- =========================
+         NAVEGACIÓN INFERIOR
+    ========================== -->
+
+    <nav class="bottom-nav">
+
+        <button
+            class="nav-item active"
+            type="button"
+            data-screen="inicio"
+        >
+
+            <span class="nav-icon">
+                <span class="icon-home"></span>
+            </span>
+
+            <span>
+                Inicio
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            type="button"
+            data-screen="calendario"
+        >
+
+            <span class="nav-icon">
+                <span class="icon-calendar"></span>
+            </span>
+
+            <span>
+                Calendario
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            type="button"
+            data-screen="servicios"
+        >
+
+            <span class="nav-icon">
+                <span class="icon-cross"></span>
+            </span>
+
+            <span>
+                Servicios
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            type="button"
+            data-screen="ministerios"
+        >
+
+            <span class="nav-icon">
+                <span class="icon-users"></span>
+            </span>
+
+            <span>
+                Ministerios
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            type="button"
+            data-screen="perfil"
+        >
+
+            <span class="nav-icon">
+                <span class="icon-user"></span>
+            </span>
+
+            <span>
+                Perfil
+            </span>
+
+        </button>
+
+    </nav>
+
+
+    <script src="app.js"></script>
+
+</body>
+</html>

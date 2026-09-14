@@ -1,0 +1,1261 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --background: #0d0d0d;
+    --surface: #151515;
+    --surface-light: #1c1c1c;
+    --text: #f5f5f5;
+    --text-soft: #a4a4a4;
+    --accent: #D4AF5A;
+    --border: rgba(255,255,255,0.07);
+}
+
+html {
+    background: #080808;
+}
+
+body {
+    background: #080808;
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button,
+input {
+    font-family: inherit;
+}
+
+
+/* =========================================
+   LOGIN
+   ========================================= */
+
+.login-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: #080808;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    overflow-y: auto;
+}
+
+.login-content {
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+}
+
+.login-logo {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 1px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+    color: var(--accent);
+    font-size: 17px;
+    letter-spacing: 1px;
+}
+
+.login-label {
+    color: var(--accent);
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    margin-bottom: 6px;
+}
+
+.login-content h1 {
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: -0.6px;
+}
+
+.login-subtitle {
+    color: var(--text-soft);
+    font-size: 13px;
+    margin-top: 9px;
+    margin-bottom: 32px;
+}
+
+#login-form {
+    width: 100%;
+}
+
+.login-field {
+    text-align: left;
+    margin-bottom: 17px;
+}
+
+.login-field label {
+    display: block;
+    color: var(--text-soft);
+    font-size: 10px;
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
+}
+
+.login-field input {
+    width: 100%;
+    height: 48px;
+    padding: 0 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 16px;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color 0.2s ease;
+}
+
+.login-field input:focus {
+    border-color: rgba(212,175,90,0.6);
+}
+
+.login-field input::placeholder {
+    color: #666;
+}
+
+#login-pin {
+    letter-spacing: 4px;
+}
+
+.login-button {
+    width: 100%;
+    height: 48px;
+    margin-top: 8px;
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    background: var(--accent);
+    color: #0d0d0d;
+    font-size: 13px;
+    font-weight: 500;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.login-button:disabled {
+    opacity: 0.6;
+}
+
+.login-message {
+    min-height: 18px;
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--text-soft);
+    line-height: 1.4;
+}
+
+.login-message.error {
+    color: #c98989;
+}
+
+.login-message.success {
+    color: var(--accent);
+}
+
+
+/* =========================================
+   APLICACIÓN
+   ========================================= */
+
+.app {
+    max-width: 480px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--background);
+    padding: 26px 20px 110px;
+}
+
+.screen {
+    display: none;
+}
+
+.screen.active-screen {
+    display: block;
+}
+
+
+/* HEADER */
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 48px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-placeholder {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    border: 1px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--text-soft);
+}
+
+.brand-title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.notification {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    outline: none;
+    box-shadow: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+/* =========================================
+   ICONOS GENERALES
+   ========================================= */
+
+.icon {
+    width: 19px;
+    height: 19px;
+    display: inline-block;
+    position: relative;
+    color: currentColor;
+}
+
+
+/* CAMPANA */
+
+.icon-bell::before {
+    content: "";
+    position: absolute;
+    width: 11px;
+    height: 12px;
+    border: 1.5px solid currentColor;
+    border-radius: 7px 7px 4px 4px;
+    left: 3.5px;
+    top: 2px;
+}
+
+.icon-bell::after {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 1.5px;
+    background: currentColor;
+    left: 2px;
+    bottom: 3px;
+    border-radius: 2px;
+}
+
+
+/* CASA */
+
+.icon-home::before {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 10px;
+    border: 1.5px solid currentColor;
+    border-top: none;
+    left: 3.5px;
+    top: 7px;
+}
+
+.icon-home::after {
+    content: "";
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    border-left: 1.5px solid currentColor;
+    border-top: 1.5px solid currentColor;
+    transform: rotate(45deg);
+    left: 4px;
+    top: 2px;
+}
+
+
+/* CALENDARIO */
+
+.icon-calendar::before {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 14px;
+    border: 1.5px solid currentColor;
+    border-radius: 3px;
+    left: 2px;
+    top: 3px;
+}
+
+.icon-calendar::after {
+    content: "";
+    position: absolute;
+    width: 11px;
+    height: 1.5px;
+    background: currentColor;
+    left: 4px;
+    top: 7px;
+}
+
+
+/* USUARIOS */
+
+.icon-users::before {
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    left: 2px;
+    top: 2px;
+}
+
+.icon-users::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 7px;
+    border: 1.5px solid currentColor;
+    border-radius: 8px 8px 3px 3px;
+    left: 4px;
+    bottom: 2px;
+}
+
+
+/* MEGÁFONO */
+
+.icon-megaphone::before {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 7px;
+    border: 1.5px solid currentColor;
+    transform: skewY(-18deg);
+    left: 4px;
+    top: 4px;
+}
+
+.icon-megaphone::after {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 1.5px;
+    background: currentColor;
+    transform: rotate(70deg);
+    left: 3px;
+    bottom: 3px;
+}
+
+
+/* ORACIÓN */
+
+.icon-pray::before {
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 13px;
+    border: 1.5px solid currentColor;
+    border-radius: 8px 8px 4px 4px;
+    transform: rotate(8deg);
+    left: 2px;
+    top: 2px;
+}
+
+.icon-pray::after {
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 13px;
+    border: 1.5px solid currentColor;
+    border-radius: 8px 8px 4px 4px;
+    transform: rotate(-8deg);
+    right: 2px;
+    top: 2px;
+}
+
+
+/* CRUZ */
+
+.icon-cross::before {
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 17px;
+    background: currentColor;
+    left: 7.5px;
+    top: 1px;
+    border-radius: 1px;
+}
+
+.icon-cross::after {
+    content: "";
+    position: absolute;
+    width: 13px;
+    height: 4px;
+    background: currentColor;
+    left: 3px;
+    top: 5px;
+    border-radius: 1px;
+}
+
+
+/* USUARIO */
+
+.icon-user::before {
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    left: 6px;
+    top: 1px;
+}
+
+.icon-user::after {
+    content: "";
+    position: absolute;
+    width: 13px;
+    height: 7px;
+    border: 1.5px solid currentColor;
+    border-radius: 8px 8px 3px 3px;
+    left: 3px;
+    bottom: 1px;
+}
+
+
+/* =========================================
+   ICONOS DE MINISTERIOS
+   ========================================= */
+
+.icon-pastor::before {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    left: 5px;
+    top: 1px;
+}
+
+.icon-pastor::after {
+    content: "";
+    position: absolute;
+    width: 11px;
+    height: 9px;
+    border: 1.5px solid currentColor;
+    border-radius: 8px 8px 3px 3px;
+    left: 4px;
+    bottom: 1px;
+}
+
+.icon-youth::before {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    left: 6px;
+    top: 1px;
+}
+
+.icon-youth::after {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 7px;
+    border: 1.5px solid currentColor;
+    border-radius: 8px 8px 3px 3px;
+    left: 2px;
+    bottom: 2px;
+}
+
+.icon-child::before {
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    left: 5px;
+    top: 1px;
+}
+
+.icon-child::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 7px;
+    border: 1.5px solid currentColor;
+    border-radius: 7px 7px 3px 3px;
+    left: 4px;
+    bottom: 1px;
+}
+
+.icon-deacon::before {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 13px;
+    border: 1.5px solid currentColor;
+    border-radius: 8px 3px 8px 3px;
+    transform: rotate(35deg);
+    left: 1px;
+    top: 3px;
+}
+
+.icon-deacon::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 13px;
+    border: 1.5px solid currentColor;
+    border-radius: 3px 8px 3px 8px;
+    transform: rotate(-35deg);
+    right: 1px;
+    top: 3px;
+}
+
+.icon-teaching::before {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 12px;
+    border: 1.5px solid currentColor;
+    transform: skewY(-12deg);
+    left: 2px;
+    top: 3px;
+}
+
+.icon-teaching::after {
+    content: "";
+    position: absolute;
+    width: 1.5px;
+    height: 14px;
+    background: currentColor;
+    left: 9px;
+    top: 3px;
+}
+
+.icon-music::before {
+    content: "";
+    position: absolute;
+    width: 9px;
+    height: 13px;
+    border-right: 1.5px solid currentColor;
+    border-top: 1.5px solid currentColor;
+    transform: skewY(-15deg);
+    left: 6px;
+    top: 1px;
+}
+
+.icon-music::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 5px;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    left: 2px;
+    bottom: 1px;
+}
+
+.icon-dance::before {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    left: 7px;
+    top: 1px;
+}
+
+.icon-dance::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-left: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(-35deg);
+    left: 2px;
+    top: 6px;
+}
+
+.icon-kitchen::before {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 16px;
+    background: currentColor;
+    left: 5px;
+    top: 1px;
+    border-radius: 2px;
+}
+
+.icon-kitchen::after {
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 11px;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    right: 2px;
+    top: 3px;
+}
+
+.icon-camera::before {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 10px;
+    border: 1.5px solid currentColor;
+    border-radius: 3px;
+    left: 2px;
+    top: 5px;
+}
+
+.icon-camera::after {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    left: 7px;
+    top: 7px;
+}
+
+.icon-siloe::before {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 12px;
+    border: 1.5px solid currentColor;
+    border-radius: 2px;
+    left: 2px;
+    top: 5px;
+}
+
+.icon-siloe::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 5px;
+    border: 1.5px solid currentColor;
+    border-bottom: none;
+    border-radius: 3px 3px 0 0;
+    left: 5.5px;
+    top: 1px;
+}
+
+
+/* =========================================
+   WELCOME
+   ========================================= */
+
+.welcome {
+    margin-bottom: 44px;
+}
+
+.welcome-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 12px;
+}
+
+.welcome h2 {
+    font-size: 31px;
+    line-height: 1.15;
+    font-weight: 500;
+    letter-spacing: -0.8px;
+    margin-bottom: 14px;
+}
+
+.welcome h2 span {
+    color: var(--accent);
+}
+
+.welcome p {
+    color: var(--text-soft);
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 350px;
+}
+
+
+/* SECCIONES */
+
+.section {
+    margin-bottom: 34px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.section-title {
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-soft);
+}
+
+.section-link {
+    color: var(--accent);
+    font-size: 11px;
+}
+
+
+/* ACTIVIDAD */
+
+.activity-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.activity-date {
+    width: 48px;
+    height: 56px;
+    border: 1px solid rgba(212,175,90,0.35);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.activity-date span:first-child {
+    font-size: 9px;
+    color: var(--accent);
+    letter-spacing: 1px;
+}
+
+.activity-date span:last-child {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.activity-type {
+    color: var(--accent);
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    margin-bottom: 5px;
+}
+
+.activity-name {
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+.activity-meta {
+    color: var(--text-soft);
+    font-size: 11px;
+}
+
+
+/* MI SERVICIO */
+
+.my-service {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+}
+
+.my-service-date {
+    color: var(--accent);
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+}
+
+.my-service-title {
+    font-size: 19px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.my-service-meta {
+    color: var(--text-soft);
+    font-size: 11px;
+}
+
+.my-service-status {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: var(--surface-light);
+    color: var(--text-soft);
+    font-size: 9px;
+}
+
+
+/* ACCESO RÁPIDO */
+
+.quick-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.quick-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    padding: 18px 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.quick-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--surface-light);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quick-name {
+    font-size: 12px;
+}
+
+
+/* PAGE HEADER */
+
+.page-header {
+    margin-bottom: 30px;
+}
+
+.page-label {
+    color: var(--accent);
+    font-size: 9px;
+    letter-spacing: 1.8px;
+    margin-bottom: 8px;
+}
+
+.page-header h1 {
+    font-size: 29px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+}
+
+
+/* CALENDARIO */
+
+.calendar-month {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+
+.month-arrow {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 23px;
+    line-height: 1;
+}
+
+.week-days,
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+}
+
+.week-days {
+    color: var(--text-soft);
+    font-size: 9px;
+    margin-bottom: 10px;
+}
+
+.calendar-days {
+    row-gap: 6px;
+}
+
+.calendar-days span {
+    height: 37px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.calendar-days .selected-day {
+    background: var(--accent);
+    color: #0d0d0d;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    margin: auto;
+}
+
+.calendar-days .empty {
+    visibility: hidden;
+}
+
+.calendar-events {
+    margin-top: 30px;
+}
+
+.event-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    display: flex;
+    gap: 14px;
+}
+
+.event-line {
+    width: 3px;
+    border-radius: 3px;
+    background: var(--accent);
+}
+
+.event-type {
+    color: var(--accent);
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    margin-bottom: 5px;
+}
+
+.event-name {
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+.event-meta {
+    color: var(--text-soft);
+    font-size: 11px;
+}
+
+
+/* SERVICIOS */
+
+.service-summary {
+    background: var(--surface);
+    border: 1px solid rgba(212,175,90,0.2);
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 30px;
+}
+
+.summary-label {
+    color: var(--accent);
+    font-size: 9px;
+    letter-spacing: 1.5px;
+}
+
+.summary-title {
+    font-size: 24px;
+    margin: 9px 0 5px;
+}
+
+.summary-date {
+    color: var(--text-soft);
+    font-size: 11px;
+    margin-bottom: 20px;
+}
+
+.confirm-button {
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    padding: 13px;
+    background: var(--surface-light);
+    color: var(--text);
+    font-size: 12px;
+    outline: none;
+}
+
+.service-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+}
+
+.service-date {
+    width: 43px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.service-date span {
+    display: block;
+    color: var(--accent);
+    font-size: 8px;
+    letter-spacing: 1px;
+}
+
+.service-date strong {
+    font-size: 19px;
+    font-weight: 500;
+}
+
+.service-details {
+    flex: 1;
+}
+
+.service-role {
+    color: var(--accent);
+    font-size: 8px;
+    letter-spacing: 1.4px;
+    margin-bottom: 4px;
+}
+
+.service-name {
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.service-time {
+    color: var(--text-soft);
+    font-size: 10px;
+}
+
+.status-pending {
+    color: var(--text-soft);
+    font-size: 9px;
+}
+
+
+/* MINISTERIOS */
+
+.ministry-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ministry-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.ministry-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+    background: var(--surface-light);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ministry-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.ministry-name {
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.ministry-leader {
+    color: var(--text-soft);
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+.arrow {
+    color: var(--text-soft);
+    font-size: 22px;
+    font-weight: 300;
+}
+
+
+/* PERFIL */
+
+.profile-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 25px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-avatar {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    border: 1px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    margin: 0 auto 13px;
+    font-size: 15px;
+}
+
+.profile-name {
+    font-size: 17px;
+    margin-bottom: 5px;
+}
+
+.profile-role {
+    color: var(--text-soft);
+    font-size: 10px;
+}
+
+.profile-option {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 17px 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.option-title {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.option-description {
+    display: block;
+    color: var(--text-soft);
+    font-size: 10px;
+}
+
+
+/* NAVEGACIÓN */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    height: 76px;
+    background: rgba(13,13,13,0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    color: var(--text-soft);
+    font-size: 9px;
+    background: transparent;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.nav-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    background: transparent;
+}
+
+.nav-item.active {
+    color: var(--accent);
+}
+
+
+/* ESCRITORIO */
+
+@media (min-width: 600px) {
+
+    .app {
+        min-height: 100vh;
+        border-left: 1px solid rgba(255,255,255,0.03);
+        border-right: 1px solid rgba(255,255,255,0.03);
+    }
+
