@@ -14,6 +14,7 @@ const RESET_PIN_FUNCTION_URL = "https://ppetgpgytbmkbcvtfqhh.supabase.co/functio
 const CHANGE_PIN_FUNCTION_URL = "https://ppetgpgytbmkbcvtfqhh.supabase.co/functions/v1/cambiar-mi-pin";
 const PUSH_SUBSCRIBE_FUNCTION_URL = "https://ppetgpgytbmkbcvtfqhh.supabase.co/functions/v1/push-subscribe";
 const PUSH_TEST_FUNCTION_URL = "https://ppetgpgytbmkbcvtfqhh.supabase.co/functions/v1/push-test";
+const NOTIFY_PROGRAMMING_FUNCTION_URL = "https://ppetgpgytbmkbcvtfqhh.supabase.co/functions/v1/notify-programming";
 
 /* =========================================================
    ELEMENTOS / ESTADO
@@ -1318,6 +1319,58 @@ function openMonthlyProgramming(ministry,members,data,initialMonth="") {
     render();
 }
 
+
+async function notifyProgrammingAssignment(personId,ministryId,month){
+    const accessToken=getAccessToken();
+
+    if(!accessToken){
+        console.warn("No se pudo enviar el aviso de programación: no hay sesión.");
+        return {ok:false,error:"Sin sesión"};
+    }
+
+    try{
+        const response=await fetch(NOTIFY_PROGRAMMING_FUNCTION_URL,{
+            method:"POST",
+            headers:{
+                apikey:SUPABASE_ANON_KEY,
+                Authorization:`Bearer ${accessToken}`,
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                person_id:personId,
+                ministry_id:ministryId,
+                month
+            })
+        });
+
+        const text=await response.text();
+        let data=null;
+
+        try{
+            data=text?JSON.parse(text):null;
+        }catch{}
+
+        if(!response.ok||!data?.ok){
+            throw new Error(
+                data?.error||
+                data?.message||
+                "No se pudo enviar el aviso de programación."
+            );
+        }
+
+        console.log("Aviso de programación:",data);
+        return data;
+
+    }catch(error){
+        // La programación ya quedó guardada; un fallo de push no debe revertirla.
+        console.error("Error enviando aviso de programación:",error);
+        return {
+            ok:false,
+            error:error?.message||"No se pudo enviar el aviso."
+        };
+    }
+}
+
 async function saveMonthlyProgramming(ministry,members,monthData,selectedMonth){
     const detail=document.getElementById("service-detail");if(!detail)return;
     const personId=detail.querySelector("#monthly-programming-person")?.value||"";
@@ -1374,6 +1427,17 @@ async function saveMonthlyProgramming(ministry,members,monthData,selectedMonth){
         }
 
         await loadMyNextAssignment();
+
+        // Un solo aviso por persona al guardar nuevas asignaciones del mes.
+        // Si únicamente se quitaron fechas, no enviamos una notificación de "nuevos servicios".
+        if(toAdd.length>0){
+            await notifyProgrammingAssignment(
+                personId,
+                ministry.id,
+                selectedMonth
+            );
+        }
+
         alert(`Programación de ${personName} actualizada correctamente.`);
         await openMinistryProgramming(ministry.id);
     }catch(error){
