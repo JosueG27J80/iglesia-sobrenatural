@@ -10021,3 +10021,25 @@ textarea {
         border-radius:20px;
     }
 }
+
+
+/* =========================================================
+   PWA / iOS SAFE AREA
+   Evita que el encabezado quede debajo de Dynamic Island
+   ========================================================= */
+
+.app{
+    padding-top:max(
+        26px,
+        calc(env(safe-area-inset-top, 0px) + 14px)
+    );
+    padding-bottom:max(
+        110px,
+        calc(92px + env(safe-area-inset-bottom, 0px))
+    );
+}
+
+.bottom-nav{
+    height:calc(76px + env(safe-area-inset-bottom, 0px));
+    padding-bottom:env(safe-area-inset-bottom, 0px);
+}
