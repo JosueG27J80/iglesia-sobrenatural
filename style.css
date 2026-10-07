@@ -10043,3 +10043,246 @@ textarea {
     height:calc(76px + env(safe-area-inset-bottom, 0px));
     padding-bottom:env(safe-area-inset-bottom, 0px);
 }
+
+
+/* =========================================================
+   AVISO DE INSTALACIÓN PWA
+   ========================================================= */
+
+body.pwa-install-open{
+    overflow:hidden;
+}
+
+.pwa-install-overlay{
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    padding:
+        20px
+        16px
+        max(18px,env(safe-area-inset-bottom,0px));
+    background:rgba(0,0,0,.58);
+    opacity:0;
+    transition:opacity .22s ease;
+    -webkit-backdrop-filter:blur(7px);
+    backdrop-filter:blur(7px);
+}
+
+.pwa-install-overlay.is-visible{
+    opacity:1;
+}
+
+.pwa-install-sheet{
+    width:min(100%,470px);
+    position:relative;
+    overflow:hidden;
+    padding:25px 20px 18px;
+    border:1px solid rgba(212,175,90,.28);
+    border-radius:27px;
+    background:
+        linear-gradient(
+            150deg,
+            rgba(255,255,255,.085) 0%,
+            rgba(255,255,255,.025) 32%,
+            rgba(12,12,12,.96) 68%,
+            rgba(212,175,90,.035) 100%
+        );
+    color:#fff;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.12),
+        0 28px 65px rgba(0,0,0,.50);
+    -webkit-backdrop-filter:blur(24px) saturate(145%);
+    backdrop-filter:blur(24px) saturate(145%);
+    transform:translateY(24px) scale(.985);
+    transition:transform .24s ease;
+}
+
+.pwa-install-overlay.is-visible .pwa-install-sheet{
+    transform:translateY(0) scale(1);
+}
+
+.pwa-install-close{
+    position:absolute;
+    top:14px;
+    right:14px;
+    width:36px;
+    height:36px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:50%;
+    background:rgba(255,255,255,.045);
+    color:rgba(255,255,255,.70);
+    font-size:24px;
+    line-height:1;
+    font-weight:300;
+}
+
+.pwa-install-brand{
+    width:66px;
+    height:66px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:18px;
+    border:1px solid rgba(212,175,90,.25);
+    border-radius:18px;
+    background:#050505;
+    box-shadow:0 10px 28px rgba(0,0,0,.26);
+}
+
+.pwa-install-app-icon{
+    width:100%;
+    height:100%;
+    display:block;
+    border-radius:17px;
+    object-fit:cover;
+}
+
+.pwa-install-eyebrow{
+    margin:0 0 8px;
+    color:#DDB85A;
+    font-size:10px;
+    line-height:1.2;
+    font-weight:700;
+    letter-spacing:3px;
+}
+
+.pwa-install-sheet h2{
+    margin:0;
+    max-width:330px;
+    color:#fff;
+    font-size:29px;
+    line-height:1.05;
+    font-weight:760;
+    letter-spacing:-.7px;
+}
+
+.pwa-install-description{
+    margin:12px 0 20px;
+    color:rgba(255,255,255,.59);
+    font-size:13px;
+    line-height:1.5;
+}
+
+.pwa-install-ios-help{
+    display:grid;
+    grid-template-columns:31px minmax(0,1fr);
+    align-items:center;
+    gap:10px;
+    min-height:52px;
+    margin-top:8px;
+    padding:9px 12px;
+    border:1px solid rgba(255,255,255,.075);
+    border-radius:15px;
+    background:rgba(255,255,255,.025);
+    color:rgba(255,255,255,.72);
+    font-size:12px;
+    line-height:1.35;
+}
+
+.pwa-install-ios-help strong{
+    color:#fff;
+    font-weight:700;
+}
+
+.pwa-install-ios-number{
+    width:29px;
+    height:29px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid rgba(212,175,90,.30);
+    border-radius:50%;
+    background:rgba(212,175,90,.08);
+    color:#E1BC5F;
+    font-size:11px;
+    font-weight:750;
+}
+
+.pwa-install-primary{
+    width:100%;
+    min-height:69px;
+    display:grid;
+    grid-template-columns:44px minmax(0,1fr);
+    align-items:center;
+    gap:12px;
+    margin-top:17px;
+    padding:10px 13px;
+    border:1px solid rgba(255,255,255,.20);
+    border-radius:19px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.10) 0%,
+            rgba(255,255,255,.03) 38%,
+            rgba(18,18,18,.55) 72%,
+            rgba(212,175,90,.05) 100%
+        );
+    color:#fff;
+    text-align:left;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.16),
+        0 13px 28px rgba(0,0,0,.18);
+    -webkit-backdrop-filter:blur(16px);
+    backdrop-filter:blur(16px);
+}
+
+.pwa-install-primary:disabled{
+    opacity:.55;
+}
+
+.pwa-install-primary-icon{
+    width:43px;
+    height:43px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid rgba(212,175,90,.22);
+    border-radius:13px;
+    background:rgba(212,175,90,.07);
+    color:#E1BB5C;
+}
+
+.pwa-install-primary-icon svg{
+    width:24px;
+    height:24px;
+}
+
+.pwa-install-primary strong{
+    display:block;
+    color:#fff;
+    font-size:15px;
+    line-height:1.2;
+    font-weight:720;
+}
+
+.pwa-install-primary small{
+    display:block;
+    margin-top:3px;
+    color:rgba(255,255,255,.49);
+    font-size:10.5px;
+    line-height:1.25;
+}
+
+.pwa-install-later{
+    width:100%;
+    margin-top:8px;
+    padding:11px 10px 7px;
+    border:0;
+    background:transparent;
+    color:rgba(255,255,255,.48);
+    font-size:12px;
+    font-weight:600;
+}
+
+@media(min-width:700px){
+    .pwa-install-overlay{
+        align-items:center;
+    }
+}

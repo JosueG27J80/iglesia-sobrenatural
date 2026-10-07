@@ -5827,3 +5827,239 @@ attachProfileConfiguration();
 updatePastoralAccess();
 updatePastoralButtonVisibility();
 initializeSecureLogin();
+
+
+/* =========================================================
+   INSTALACIÓN PWA — ANDROID / iPHONE
+========================================================= */
+let deferredInstallPrompt = null;
+const INSTALL_PROMPT_KEY = "sobrenatural_install_prompt_seen_v1";
+
+function isStandalonePWA(){
+    return (
+        window.matchMedia?.("(display-mode: standalone)")?.matches ||
+        window.navigator.standalone === true
+    );
+}
+
+function isIOSDevice(){
+    return /iphone|ipad|ipod/i.test(navigator.userAgent);
+}
+
+function isAndroidDevice(){
+    return /android/i.test(navigator.userAgent);
+}
+
+function hasSeenInstallPrompt(){
+    return localStorage.getItem(INSTALL_PROMPT_KEY) === "1";
+}
+
+function rememberInstallPrompt(){
+    localStorage.setItem(INSTALL_PROMPT_KEY,"1");
+}
+
+function closeInstallPrompt({remember=true}={}){
+    const overlay=document.getElementById("pwa-install-overlay");
+    if(overlay)overlay.remove();
+    document.body.classList.remove("pwa-install-open");
+    if(remember)rememberInstallPrompt();
+}
+
+function getInstallIcon(){
+    return `
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3v11m0 0 4-4m-4 4-4-4"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"/>
+            <path d="M5 15v3.2A2.8 2.8 0 0 0 7.8 21h8.4a2.8 2.8 0 0 0 2.8-2.8V15"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"/>
+        </svg>`;
+}
+
+function renderInstallPrompt(mode){
+    if(
+        isStandalonePWA() ||
+        hasSeenInstallPrompt() ||
+        document.getElementById("pwa-install-overlay")
+    ){
+        return;
+    }
+
+    const isIOS=mode==="ios";
+    const isAndroid=mode==="android";
+    const overlay=document.createElement("div");
+
+    overlay.id="pwa-install-overlay";
+    overlay.className="pwa-install-overlay";
+
+    overlay.innerHTML=`
+        <div class="pwa-install-sheet"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="pwa-install-title">
+
+            <button type="button"
+                    class="pwa-install-close"
+                    id="pwa-install-close"
+                    aria-label="Cerrar">
+                ×
+            </button>
+
+            <div class="pwa-install-brand">
+                <img src="icon-192.png"
+                     alt=""
+                     class="pwa-install-app-icon">
+            </div>
+
+            <p class="pwa-install-eyebrow">IGLESIA SOBRENATURAL</p>
+
+            <h2 id="pwa-install-title">
+                Instala Iglesia Sobrenatural
+            </h2>
+
+            <p class="pwa-install-description">
+                Accede más rápido a tus servicios, asignaciones y ministerios desde tu pantalla de inicio.
+            </p>
+
+            ${
+                isIOS
+                    ? `
+                        <div class="pwa-install-ios-help">
+                            <span class="pwa-install-ios-number">1</span>
+                            <span>Toca <strong>Compartir</strong> en Safari.</span>
+                        </div>
+
+                        <div class="pwa-install-ios-help">
+                            <span class="pwa-install-ios-number">2</span>
+                            <span>Selecciona <strong>Añadir a pantalla de inicio</strong>.</span>
+                        </div>
+
+                        <button type="button"
+                                class="pwa-install-primary"
+                                id="pwa-install-understood">
+                            <span class="pwa-install-primary-icon">
+                                ${getInstallIcon()}
+                            </span>
+                            <span>
+                                <strong>Entendido</strong>
+                                <small>La instalaré desde Safari</small>
+                            </span>
+                        </button>
+                    `
+                    : `
+                        <button type="button"
+                                class="pwa-install-primary"
+                                id="pwa-install-action">
+                            <span class="pwa-install-primary-icon">
+                                ${getInstallIcon()}
+                            </span>
+                            <span>
+                                <strong>${isAndroid ? "Instalar app" : "Instalar"}</strong>
+                                <small>Abrir como aplicación</small>
+                            </span>
+                        </button>
+                    `
+            }
+
+            <button type="button"
+                    class="pwa-install-later"
+                    id="pwa-install-later">
+                Ahora no
+            </button>
+        </div>`;
+
+    document.body.appendChild(overlay);
+    document.body.classList.add("pwa-install-open");
+
+    requestAnimationFrame(()=>{
+        overlay.classList.add("is-visible");
+    });
+
+    overlay.querySelector("#pwa-install-close")
+        ?.addEventListener("click",()=>closeInstallPrompt());
+
+    overlay.querySelector("#pwa-install-later")
+        ?.addEventListener("click",()=>closeInstallPrompt());
+
+    overlay.querySelector("#pwa-install-understood")
+        ?.addEventListener("click",()=>closeInstallPrompt());
+
+    overlay.addEventListener("click",(event)=>{
+        if(event.target===overlay){
+            closeInstallPrompt();
+        }
+    });
+
+    overlay.querySelector("#pwa-install-action")
+        ?.addEventListener("click",async()=>{
+            if(!deferredInstallPrompt){
+                closeInstallPrompt({remember:false});
+                alert("En Chrome abre el menú ⋮ y toca “Instalar aplicación” o “Agregar a pantalla de inicio”.");
+                return;
+            }
+
+            const button=overlay.querySelector("#pwa-install-action");
+            if(button)button.disabled=true;
+
+            try{
+                await deferredInstallPrompt.prompt();
+                const choice=await deferredInstallPrompt.userChoice;
+
+                deferredInstallPrompt=null;
+
+                if(choice?.outcome==="accepted"){
+                    closeInstallPrompt();
+                }else{
+                    closeInstallPrompt();
+                }
+            }catch(error){
+                console.error("No se pudo abrir el instalador PWA:",error);
+                if(button)button.disabled=false;
+            }
+        });
+}
+
+window.addEventListener("beforeinstallprompt",(event)=>{
+    event.preventDefault();
+    deferredInstallPrompt=event;
+
+    if(
+        isAndroidDevice() &&
+        !isStandalonePWA() &&
+        !hasSeenInstallPrompt()
+    ){
+        window.setTimeout(()=>{
+            renderInstallPrompt("android");
+        },900);
+    }
+});
+
+window.addEventListener("appinstalled",()=>{
+    deferredInstallPrompt=null;
+    rememberInstallPrompt();
+    closeInstallPrompt({remember:false});
+});
+
+window.addEventListener("load",()=>{
+    if(isStandalonePWA()||hasSeenInstallPrompt())return;
+
+    if(isIOSDevice()){
+        window.setTimeout(()=>{
+            renderInstallPrompt("ios");
+        },1200);
+        return;
+    }
+
+    if(isAndroidDevice()){
+        // Respaldo por si Chrome tarda en disparar beforeinstallprompt.
+        window.setTimeout(()=>{
+            if(!document.getElementById("pwa-install-overlay")){
+                renderInstallPrompt("android");
+            }
+        },3500);
+    }
+});
