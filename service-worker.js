@@ -1,4 +1,4 @@
-const CACHE_NAME = "sobrenatural-v2";
+const CACHE_NAME = "sobrenatural-v3";
 
 const APP_SHELL = [
   "./",
@@ -24,20 +24,9 @@ const STATIC_FILES = new Set(
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(async (cache) => {
-      await Promise.allSettled(
-        APP_SHELL.map(async (url) => {
-          try {
-            const response = await fetch(url, { cache: "reload" });
-            if (response.ok) {
-              await cache.put(url, response);
-            }
-          } catch (_) {
-            // Un archivo faltante no debe bloquear la instalación.
-          }
-        })
-      );
-    })
+    caches
+      .open(CACHE_NAME)
+      .then((cache) => cache.addAll(APP_SHELL))
   );
 
   self.skipWaiting();
