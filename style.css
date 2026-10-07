@@ -10030,8 +10030,8 @@ textarea {
 
 .app{
     padding-top:max(
-        26px,
-        calc(env(safe-area-inset-top, 0px) + 14px)
+        40px,
+        calc(env(safe-area-inset-top, 0px) + 28px)
     );
     padding-bottom:max(
         110px,
