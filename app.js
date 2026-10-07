@@ -13,6 +13,7 @@ const CREATE_ACCOUNT_FUNCTION_URL = "https://ppetgpgytbmkbcvtfqhh.supabase.co/fu
 const RESET_PIN_FUNCTION_URL = "https://ppetgpgytbmkbcvtfqhh.supabase.co/functions/v1/restablecer-pin";
 const CHANGE_PIN_FUNCTION_URL = "https://ppetgpgytbmkbcvtfqhh.supabase.co/functions/v1/cambiar-mi-pin";
 const PUSH_SUBSCRIBE_FUNCTION_URL = "https://ppetgpgytbmkbcvtfqhh.supabase.co/functions/v1/push-subscribe";
+const PUSH_TEST_FUNCTION_URL = "https://ppetgpgytbmkbcvtfqhh.supabase.co/functions/v1/push-test";
 
 /* =========================================================
    ELEMENTOS / ESTADO
@@ -6381,6 +6382,7 @@ function renderPushOptInCard(){
                 }
 
                 await ensurePushSubscription();
+                await sendPushConfirmationOnce();
 
                 if(message){
                     message.textContent = "Notificaciones activadas.";
@@ -6406,6 +6408,54 @@ function renderPushOptInCard(){
         });
 }
 
+
+const PUSH_CONFIRMATION_SENT_KEY = "sobrenatural_push_confirmation_sent_v1";
+
+async function sendPushConfirmationOnce(){
+    if(localStorage.getItem(PUSH_CONFIRMATION_SENT_KEY) === "1"){
+        return;
+    }
+
+    const accessToken = getAccessToken();
+
+    if(!accessToken){
+        return;
+    }
+
+    try{
+        const response = await fetch(PUSH_TEST_FUNCTION_URL, {
+            method: "POST",
+            headers: {
+                apikey: SUPABASE_ANON_KEY,
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({})
+        });
+
+        const text = await response.text();
+        let data = null;
+
+        try{
+            data = text ? JSON.parse(text) : null;
+        }catch{}
+
+        if(!response.ok || !data?.ok){
+            throw new Error(
+                data?.error ||
+                data?.message ||
+                "No se pudo enviar la notificación de confirmación."
+            );
+        }
+
+        localStorage.setItem(PUSH_CONFIRMATION_SENT_KEY, "1");
+        console.log("Notificación de confirmación enviada:", data);
+
+    }catch(error){
+        console.error("Prueba de notificaciones:", error);
+    }
+}
+
 async function handlePushNotificationsAfterLogin(){
     if(!canUsePushNotifications()){
         return;
@@ -6416,6 +6466,7 @@ async function handlePushNotificationsAfterLogin(){
             // Si ya dio permiso antes, asociamos este mismo dispositivo
             // con la persona que inició sesión actualmente.
             await ensurePushSubscription();
+            await sendPushConfirmationOnce();
             return;
         }
 
