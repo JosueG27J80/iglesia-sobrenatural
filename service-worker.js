@@ -1,4 +1,4 @@
-const CACHE_NAME = "sobrenatural-v3";
+const CACHE_NAME = "sobrenatural-v4";
 
 const APP_SHELL = [
   "./",

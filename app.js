@@ -12,6 +12,7 @@ const LOGIN_FUNCTION_URL = "https://ppetgpgytbmkbcvtfqhh.supabase.co/functions/v
 const CREATE_ACCOUNT_FUNCTION_URL = "https://ppetgpgytbmkbcvtfqhh.supabase.co/functions/v1/crear-cuenta";
 const RESET_PIN_FUNCTION_URL = "https://ppetgpgytbmkbcvtfqhh.supabase.co/functions/v1/restablecer-pin";
 const CHANGE_PIN_FUNCTION_URL = "https://ppetgpgytbmkbcvtfqhh.supabase.co/functions/v1/cambiar-mi-pin";
+const PUSH_SUBSCRIBE_FUNCTION_URL = "https://ppetgpgytbmkbcvtfqhh.supabase.co/functions/v1/push-subscribe";
 
 /* =========================================================
    ELEMENTOS / ESTADO
@@ -151,6 +152,10 @@ async function login() {
 
             // Mostramos la app solamente cuando el primer render ya terminó.
             showApp();
+
+            window.setTimeout(() => {
+                handlePushNotificationsAfterLogin();
+            }, 700);
         }, 400);
     } catch (error) {
         console.error("ERROR LOGIN:", error);
@@ -6063,3 +6068,368 @@ window.addEventListener("load",()=>{
         },3500);
     }
 });
+
+
+/* =========================================================
+   NOTIFICACIONES PUSH — REGISTRO DEL DISPOSITIVO
+========================================================= */
+
+const PUSH_PROMPT_NEXT_KEY = "sobrenatural_push_prompt_next_at_v1";
+
+function isInstalledPWA(){
+    return (
+        window.matchMedia?.("(display-mode: standalone)")?.matches ||
+        window.navigator.standalone === true
+    );
+}
+
+function canUsePushNotifications(){
+    return (
+        isInstalledPWA() &&
+        "serviceWorker" in navigator &&
+        "PushManager" in window &&
+        "Notification" in window
+    );
+}
+
+function base64UrlToUint8ArrayPush(base64Url){
+    const padding = "=".repeat((4 - (base64Url.length % 4)) % 4);
+    const base64 = (base64Url + padding)
+        .replace(/-/g, "+")
+        .replace(/_/g, "/");
+
+    const raw = atob(base64);
+    return Uint8Array.from([...raw].map(char => char.charCodeAt(0)));
+}
+
+function getPushPromptNextAt(){
+    const raw = Number(localStorage.getItem(PUSH_PROMPT_NEXT_KEY) || "0");
+    return Number.isFinite(raw) ? raw : 0;
+}
+
+function postponePushPrompt(days = 7){
+    const next = Date.now() + (days * 24 * 60 * 60 * 1000);
+    localStorage.setItem(PUSH_PROMPT_NEXT_KEY, String(next));
+}
+
+function clearPushPromptDelay(){
+    localStorage.removeItem(PUSH_PROMPT_NEXT_KEY);
+}
+
+async function getVapidPublicKey(){
+    const response = await fetch(PUSH_SUBSCRIBE_FUNCTION_URL, {
+        method: "GET",
+        headers: {
+            apikey: SUPABASE_ANON_KEY,
+            "Content-Type": "application/json"
+        }
+    });
+
+    const text = await response.text();
+    let data = null;
+
+    try{
+        data = text ? JSON.parse(text) : null;
+    }catch{}
+
+    if(!response.ok || !data?.ok || !data?.publicKey){
+        throw new Error(
+            data?.error ||
+            data?.message ||
+            "No se pudo obtener la llave de notificaciones."
+        );
+    }
+
+    return String(data.publicKey).trim();
+}
+
+async function savePushSubscription(subscription){
+    const accessToken = getAccessToken();
+
+    if(!accessToken){
+        throw new Error("Debes iniciar sesión nuevamente.");
+    }
+
+    const json = subscription.toJSON();
+
+    const response = await fetch(PUSH_SUBSCRIBE_FUNCTION_URL, {
+        method: "POST",
+        headers: {
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            endpoint: json.endpoint,
+            keys: {
+                p256dh: json.keys?.p256dh || "",
+                auth: json.keys?.auth || ""
+            }
+        })
+    });
+
+    const text = await response.text();
+    let data = null;
+
+    try{
+        data = text ? JSON.parse(text) : null;
+    }catch{}
+
+    if(!response.ok || !data?.ok){
+        throw new Error(
+            data?.error ||
+            data?.message ||
+            "No se pudo registrar este dispositivo."
+        );
+    }
+
+    return data;
+}
+
+async function ensurePushSubscription(){
+    if(!canUsePushNotifications()){
+        throw new Error(
+            "Las notificaciones están disponibles cuando Iglesia Sobrenatural está instalada como app."
+        );
+    }
+
+    const registration = await navigator.serviceWorker.ready;
+    let subscription = await registration.pushManager.getSubscription();
+
+    if(!subscription){
+        const publicKey = await getVapidPublicKey();
+
+        subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: base64UrlToUint8ArrayPush(publicKey)
+        });
+    }
+
+    await savePushSubscription(subscription);
+    clearPushPromptDelay();
+
+    return subscription;
+}
+
+function removePushOptInCard(){
+    const overlay = document.getElementById("push-optin-overlay");
+    if(!overlay) return;
+
+    overlay.classList.remove("is-visible");
+
+    window.setTimeout(()=>{
+        overlay.remove();
+        document.body.classList.remove("push-optin-open");
+    }, 200);
+}
+
+function renderPushOptInCard(){
+    if(
+        document.getElementById("push-optin-overlay") ||
+        !canUsePushNotifications()
+    ){
+        return;
+    }
+
+    const overlay = document.createElement("div");
+    overlay.id = "push-optin-overlay";
+    overlay.className = "push-optin-overlay";
+
+    overlay.innerHTML = `
+        <div class="push-optin-card"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="push-optin-title">
+
+            <button type="button"
+                    class="push-optin-close"
+                    id="push-optin-close"
+                    aria-label="Cerrar">
+                ×
+            </button>
+
+            <div class="push-optin-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"
+                          stroke="currentColor"
+                          stroke-width="1.7"
+                          stroke-linejoin="round"/>
+                    <path d="M10 21h4"
+                          stroke="currentColor"
+                          stroke-width="1.7"
+                          stroke-linecap="round"/>
+                </svg>
+            </div>
+
+            <p class="push-optin-eyebrow">IGLESIA SOBRENATURAL</p>
+
+            <h2 id="push-optin-title">
+                Activa las notificaciones
+            </h2>
+
+            <p class="push-optin-description">
+                Recibe avisos de tus servicios asignados y recordatorios importantes.
+            </p>
+
+            <div class="push-optin-benefits">
+                <div>
+                    <span class="push-optin-dot"></span>
+                    <span>Servicios asignados</span>
+                </div>
+
+                <div>
+                    <span class="push-optin-dot"></span>
+                    <span>Recordatorios importantes</span>
+                </div>
+            </div>
+
+            <p class="push-optin-message"
+               id="push-optin-message"
+               role="status"></p>
+
+            <button type="button"
+                    class="push-optin-primary"
+                    id="push-optin-enable">
+                <span class="push-optin-primary-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"
+                              stroke="currentColor"
+                              stroke-width="1.8"
+                              stroke-linejoin="round"/>
+                        <path d="M10 21h4"
+                              stroke="currentColor"
+                              stroke-width="1.8"
+                              stroke-linecap="round"/>
+                    </svg>
+                </span>
+
+                <span>
+                    <strong>Activar notificaciones</strong>
+                    <small>Permitir avisos en este teléfono</small>
+                </span>
+            </button>
+
+            <button type="button"
+                    class="push-optin-later"
+                    id="push-optin-later">
+                Ahora no
+            </button>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+    document.body.classList.add("push-optin-open");
+
+    requestAnimationFrame(()=>{
+        overlay.classList.add("is-visible");
+    });
+
+    const close = ()=>{
+        postponePushPrompt(7);
+        removePushOptInCard();
+    };
+
+    overlay.querySelector("#push-optin-close")
+        ?.addEventListener("click", close);
+
+    overlay.querySelector("#push-optin-later")
+        ?.addEventListener("click", close);
+
+    overlay.addEventListener("click",(event)=>{
+        if(event.target === overlay){
+            close();
+        }
+    });
+
+    overlay.querySelector("#push-optin-enable")
+        ?.addEventListener("click", async()=>{
+            const button = overlay.querySelector("#push-optin-enable");
+            const message = overlay.querySelector("#push-optin-message");
+
+            if(button) button.disabled = true;
+
+            if(message){
+                message.textContent = "";
+                message.className = "push-optin-message";
+            }
+
+            try{
+                const permission = await Notification.requestPermission();
+
+                if(permission !== "granted"){
+                    if(permission === "denied"){
+                        postponePushPrompt(30);
+
+                        if(message){
+                            message.textContent =
+                                "Las notificaciones fueron desactivadas. Puedes habilitarlas después desde los ajustes del teléfono.";
+                            message.classList.add("is-error");
+                        }
+
+                        if(button) button.disabled = false;
+                        return;
+                    }
+
+                    postponePushPrompt(7);
+                    removePushOptInCard();
+                    return;
+                }
+
+                if(message){
+                    message.textContent = "Activando...";
+                    message.classList.add("is-success");
+                }
+
+                await ensurePushSubscription();
+
+                if(message){
+                    message.textContent = "Notificaciones activadas.";
+                    message.classList.add("is-success");
+                }
+
+                window.setTimeout(()=>{
+                    removePushOptInCard();
+                }, 800);
+
+            }catch(error){
+                console.error("Error activando notificaciones:", error);
+
+                if(message){
+                    message.textContent =
+                        error?.message ||
+                        "No se pudieron activar las notificaciones.";
+                    message.classList.add("is-error");
+                }
+
+                if(button) button.disabled = false;
+            }
+        });
+}
+
+async function handlePushNotificationsAfterLogin(){
+    if(!canUsePushNotifications()){
+        return;
+    }
+
+    try{
+        if(Notification.permission === "granted"){
+            // Si ya dio permiso antes, asociamos este mismo dispositivo
+            // con la persona que inició sesión actualmente.
+            await ensurePushSubscription();
+            return;
+        }
+
+        if(Notification.permission === "denied"){
+            return;
+        }
+
+        if(Date.now() < getPushPromptNextAt()){
+            return;
+        }
+
+        renderPushOptInCard();
+
+    }catch(error){
+        console.error("Preparando notificaciones:", error);
+    }
+}
