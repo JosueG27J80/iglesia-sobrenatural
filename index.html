@@ -2,8 +2,16 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Iglesia Sobrenatural</title>
+    <meta name="theme-color" content="#050505">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sobrenatural">
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -17,7 +25,13 @@
 
         <div class="login-content">
 
-            <div class="login-logo">IS</div>
+            <div class="login-logo-wrap" aria-hidden="true">
+                <img
+                    class="login-logo-image"
+                    src="logo-iglesia.png"
+                    alt=""
+                >
+            </div>
 
             <div class="login-label">
                 IGLESIA SOBRENATURAL
@@ -900,6 +914,278 @@
 
         </main>
 
+
+        <!-- =========================
+             PANEL PASTORAL
+        ========================== -->
+
+        <main
+            id="pastoral"
+            class="screen"
+        >
+
+            <section class="page-header">
+
+                <p class="eyebrow">
+                    ADMINISTRACIÓN
+                </p>
+
+                <h1>
+                    Panel pastoral
+                </h1>
+
+                <p>
+                    Administración general de la iglesia.
+                </p>
+
+            </section>
+
+
+            <!-- OPCIONES PRINCIPALES -->
+
+            <section class="profile-options">
+
+                <button
+                    id="pastoral-personas-button"
+                    class="profile-option"
+                    type="button"
+                >
+                    <span>
+                        Personas
+                    </span>
+
+                    <span>›</span>
+                </button>
+
+
+                <button
+                    id="pastoral-cuentas-button"
+                    class="profile-option"
+                    type="button"
+                >
+                    <span>
+                        Cuentas
+                    </span>
+
+                    <span>›</span>
+                </button>
+
+
+                <button
+                    id="pastoral-servicios-button"
+                    class="profile-option"
+                    type="button"
+                >
+                    <span>
+                        Servicios
+                    </span>
+
+                    <span>›</span>
+                </button>
+
+
+                <button
+                    id="pastoral-actividad-button"
+                    class="profile-option"
+                    type="button"
+                >
+                    <span>
+                        Actividad reciente
+                    </span>
+
+                    <span>›</span>
+                </button>
+
+            </section>
+
+
+            <!-- =========================
+                 PERSONAS
+            ========================== -->
+
+            <section
+                id="pastoral-personas-section"
+                class="ministry-detail-card"
+                hidden
+            >
+
+                <div class="section-heading">
+
+                    <h2>
+                        Personas
+                    </h2>
+
+                </div>
+
+
+                <div
+                    id="pastoral-personas-container"
+                >
+
+                    <div class="service-list-item">
+
+                        <div>
+
+                            <strong>
+                                Cargando...
+                            </strong>
+
+                            <p>
+                                Consultando personas
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="pastoral-nueva-persona-button"
+                    class="profile-option"
+                    type="button"
+                >
+
+                    <span>
+                        Nueva persona
+                    </span>
+
+                    <span>+</span>
+
+                </button>
+
+            </section>
+
+
+            <!-- =========================
+                 NUEVA PERSONA
+            ========================== -->
+
+            <section
+                id="pastoral-persona-form"
+                class="ministry-detail-card"
+                hidden
+            >
+
+                <div class="section-heading">
+
+                    <h2>
+                        Nueva persona
+                    </h2>
+
+                </div>
+
+
+                <div class="login-field">
+
+                    <label for="pastoral-first-name">
+                        NOMBRE
+                    </label>
+
+                    <input
+                        id="pastoral-first-name"
+                        type="text"
+                        placeholder="Nombre"
+                        autocomplete="given-name"
+                    >
+
+                </div>
+
+
+                <div class="login-field">
+
+                    <label for="pastoral-last-name">
+                        APELLIDO
+                    </label>
+
+                    <input
+                        id="pastoral-last-name"
+                        type="text"
+                        placeholder="Apellido"
+                        autocomplete="family-name"
+                    >
+
+                </div>
+
+
+                <div class="login-field">
+
+                    <label for="pastoral-role">
+                        ROL
+                    </label>
+
+                    <select
+                        id="pastoral-role"
+                    >
+                        <option value="server">
+                            Servidor
+                        </option>
+
+                        <option value="leader">
+                            Líder
+                        </option>
+
+                        <option value="pastor">
+                            Pastor
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <button
+                    id="pastoral-guardar-persona-button"
+                    class="login-button"
+                    type="button"
+                >
+                    Crear persona
+                </button>
+
+
+                <button
+                    id="pastoral-cancelar-persona-button"
+                    class="profile-option"
+                    type="button"
+                >
+                    <span>
+                        Cancelar
+                    </span>
+
+                    <span>‹</span>
+                </button>
+
+
+                <div
+                    id="pastoral-persona-message"
+                    class="login-message"
+                ></div>
+
+            </section>
+
+
+            <!-- =========================
+                 VOLVER
+            ========================== -->
+
+            <section class="profile-options">
+
+                <button
+                    id="pastoral-back-button"
+                    class="profile-option"
+                    type="button"
+                >
+                    <span>
+                        Volver al perfil
+                    </span>
+
+                    <span>‹</span>
+                </button>
+
+            </section>
+
+        </main>
+
     </div>
 
 
@@ -997,6 +1283,18 @@
 
 
     <script src="app.js"></script>
+
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker
+                    .register("./service-worker.js")
+                    .catch((error) => {
+                        console.error("No se pudo registrar el Service Worker:", error);
+                    });
+            });
+        }
+    </script>
 
 </body>
 </html>
