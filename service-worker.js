@@ -1,4 +1,4 @@
-const CACHE_NAME = "sobrenatural-v4";
+const CACHE_NAME = "sobrenatural-v5";
 
 const APP_SHELL = [
   "./",
@@ -54,12 +54,10 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(request.url);
 
-  // Supabase y cualquier dominio externo siempre van directo a internet.
+  // Supabase y cualquier otro dominio externo van directo a internet.
   if (url.origin !== self.location.origin) return;
 
-  // Navegación:
-  // intenta internet primero para obtener el HTML nuevo;
-  // si no hay conexión, abre la copia guardada.
+  // Navegación: internet primero, caché como respaldo.
   if (request.mode === "navigate") {
     event.respondWith(
       fetch(request)
@@ -82,18 +80,34 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Imágenes, CSS, JS, manifest e iconos:
-  // mostrar INMEDIATAMENTE la copia del teléfono.
-  // Si no existe todavía, se descarga y se guarda.
+  // Código y estilos: INTERNET PRIMERO.
+  // Así las actualizaciones de app.js y style.css llegan sin quedarse pegadas al caché viejo.
   if (
-    STATIC_FILES.has(url.href) ||
-    ["style", "script", "image", "font", "manifest"].includes(request.destination)
+    request.destination === "script" ||
+    request.destination === "style" ||
+    request.destination === "manifest"
   ) {
     event.respondWith(
+      fetch(request, { cache: "no-store" })
+        .then((response) => {
+          if (response && response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(request, copy);
+            });
+          }
+          return response;
+        })
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
+
+  // Imágenes e iconos: CACHÉ PRIMERO para que aparezcan instantáneamente.
+  if (request.destination === "image") {
+    event.respondWith(
       caches.match(request).then((cached) => {
-        if (cached) {
-          return cached;
-        }
+        if (cached) return cached;
 
         return fetch(request).then((response) => {
           if (response && response.ok) {
